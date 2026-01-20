@@ -11,6 +11,12 @@ export const envServer = createEnv({
       process.env.NODE_ENV === "production"
         ? type("string.url")
         : type("string.url | undefined"),
+
+    BETTER_AUTH_SECRET: type("string").pipe(type("string>=32")),
+    BETTER_AUTH_URL: type("string.url"),
+
+    GOOGLE_CLIENT_ID: type("string>=1"),
+    GOOGLE_CLIENT_SECRET: type("string>=1"),
   },
   experimental__runtimeEnv: process.env,
 });
