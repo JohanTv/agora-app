@@ -1,0 +1,15 @@
+services:
+  agora-db:
+    image: postgres:16
+    volumes:
+      - agora-data:/var/lib/postgresql/data
+    environment:
+      - TZ=America/Lima
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=AGORA
+    ports:
+      - 5432:5432
+
+volumes:
+  agora-data:
