@@ -1,6 +1,5 @@
+import { PROCESSING_ERROR } from "@/lib/constants";
 import type { Result } from "@/types/result.types";
-
-const PROCESSING_ERROR = "No se pudo procesar la solicitud.";
 
 export async function handleResponse<T>(
   url: string,
