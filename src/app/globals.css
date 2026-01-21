@@ -44,6 +44,15 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-agora-navy: var(--agora-navy);
+  --color-agora-navy-light: var(--agora-navy-light);
+  --color-agora-navy-dark: var(--agora-navy-dark);
+  --color-agora-accent: var(--agora-accent);
+  --color-agora-surface-light: var(--agora-surface-light);
+  --color-agora-surface-dark: var(--agora-surface-dark);
+  --font-serif: var(--font-playfair-display);
+  --font-inter: var(--font-inter);
 }
 
 :root {
@@ -79,6 +88,13 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
+
+  --agora-navy: #0f172a;
+  --agora-navy-light: #1e293b;
+  --agora-navy-dark: #020617;
+  --agora-accent: #2563eb;
+  --agora-surface-light: #f8fafc;
+  --agora-surface-dark: #0f172a;
 }
 
 .dark {
@@ -116,6 +132,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   * {
     @apply border-border outline-ring/50;
   }
