@@ -8,6 +8,23 @@ datasource db {
   provider = "postgresql"
 }
 
+enum PostStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
+enum ReactionType {
+  AGREE
+  PARTIAL
+  DISAGREE
+}
+
+enum UserRole {
+  MEMBER
+  ADMIN
+}
+
 model User {
   id            String    @id
   name          String
@@ -20,6 +37,17 @@ model User {
   banned        Boolean?  @default(false)
   banReason     String?
   banExpires    DateTime?
+
+  posts         Post[]
+  reactions     PostReaction[]
+
+  // Follow System
+  followedBy    Follows[] @relation("following")
+  following     Follows[] @relation("follower")
+
+  followersCount Int @default(0)
+  followingCount Int @default(0)
+
   sessions      Session[]
   accounts      Account[]
 
@@ -74,4 +102,74 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  content     String     @db.Text
+  images      String[]   // Array de URLs de Supabase
+  status      PostStatus @default(PENDING)
+
+  // El feedback de la IA
+  aiFeedback  String?    @db.Text
+
+  // Autor
+  authorId    String
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Threading (Recursive)
+  parentId    String?
+  parent      Post?      @relation("PostToPost", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Post[]     @relation("PostToPost")
+
+  reactions   PostReaction[]
+
+  replyCount    Int @default(0)
+  agreeCount    Int @default(0)
+  disagreeCount Int @default(0)
+  partialCount  Int @default(0)
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  editedAt  DateTime? // Para saber cuándo se editó el CONTENIDO real
+  deletedAt DateTime? // Para Soft Delete (Tombstone)
+
+  @@index([authorId])
+  @@index([parentId])
+  @@index([status])
+  @@index([createdAt]) // Para paginación por fecha
+  @@map("post")
+}
+
+model PostReaction {
+  id        String       @id @default(cuid())
+  type      ReactionType
+
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId    String
+  post      Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime     @default(now())
+
+  @@unique([userId, postId]) // Un usuario solo reacciona una vez por post
+  @@index([postId])
+  @@map("post_reaction")
+}
+
+model Follows {
+  followerId  String
+  followingId String
+
+  follower    User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+
+  @@id([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("follows")
 }
