@@ -55,7 +55,7 @@ export default function NotFound() {
             >
               <Search className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 text-agora-navy opacity-50" />
             </motion.div>
-            <h1 className="text-6xl sm:text-8xl md:text-9xl font-serif font-bold text-agora-navy">
+            <h1 className="text-6xl sm:text-8xl md:text-9xl font-serif font-bold text-agora-navy dark:text-white">
               404
             </h1>
             <motion.div
@@ -77,7 +77,7 @@ export default function NotFound() {
             Error de Navegación
           </span>
 
-          <h2 className="text-2xl sm:text-4xl md:text-6xl font-serif font-bold text-agora-navy leading-tight mb-4 px-2">
+          <h2 className="text-2xl sm:text-4xl md:text-6xl font-serif font-bold text-agora-navy dark:text-white leading-tight mb-4 px-2">
             Parece que te perdiste en el{" "}
             <span className="italic font-light">ágora</span>
           </h2>
@@ -98,7 +98,11 @@ export default function NotFound() {
           </motion.p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-4">
-            <Button asChild size="lg" className="bg-agora-navy">
+            <Button
+              asChild
+              size="lg"
+              className="bg-agora-navy dark:bg-white dark:hover:bg-white/90"
+            >
               <Link href="/">
                 Volver al inicio
                 <ArrowRight className="w-4 h-4" />
